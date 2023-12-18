@@ -1,0 +1,95 @@
+{
+  "name": "feat-1",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/feat-1/src",
+  "projectType": "application",
+  "targets": {
+    "build": {
+      "executor": "@nx/webpack:webpack",
+      "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
+      "options": {
+        "compiler": "babel",
+        "outputPath": "dist/apps/feat-1",
+        "index": "apps/feat-1/src/index.html",
+        "baseHref": "/",
+        "main": "apps/feat-1/src/main.ts",
+        "tsConfig": "apps/feat-1/tsconfig.app.json",
+        "assets": ["apps/feat-1/src/favicon.ico", "apps/feat-1/src/assets"],
+        "styles": ["apps/feat-1/src/styles.css"],
+        "scripts": [],
+        "webpackConfig": "apps/feat-1/webpack.config.ts"
+      },
+      "configurations": {
+        "development": {
+          "extractLicenses": false,
+          "optimization": false,
+          "sourceMap": true,
+          "vendorChunk": true
+        },
+        "production": {
+          "fileReplacements": [
+            {
+              "replace": "apps/feat-1/src/environments/environment.ts",
+              "with": "apps/feat-1/src/environments/environment.prod.ts"
+            }
+          ],
+          "optimization": true,
+          "outputHashing": "all",
+          "sourceMap": false,
+          "namedChunks": false,
+          "extractLicenses": true,
+          "vendorChunk": false,
+          "webpackConfig": "apps/feat-1/webpack.config.prod.ts"
+        }
+      }
+    },
+    "serve": {
+      "executor": "@nx/react:module-federation-dev-server",
+      "defaultConfiguration": "development",
+      "options": {
+        "buildTarget": "feat-1:build",
+        "hmr": true,
+        "port": 4201
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "feat-1:build:development"
+        },
+        "production": {
+          "buildTarget": "feat-1:build:production",
+          "hmr": false
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "outputs": ["{options.outputFile}"]
+    },
+    "serve-static": {
+      "executor": "@nx/web:file-server",
+      "defaultConfiguration": "production",
+      "options": {
+        "buildTarget": "feat-1:build",
+        "watch": false,
+        "port": 4201
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "feat-1:build:development"
+        },
+        "production": {
+          "buildTarget": "feat-1:build:production"
+        }
+      }
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "apps/feat-1/jest.config.ts"
+      }
+    }
+  },
+  "tags": []
+}
